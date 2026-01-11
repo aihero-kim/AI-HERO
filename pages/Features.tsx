@@ -37,7 +37,7 @@ const Features: React.FC = () => {
         duration: 1,
         ease: "power3.out"
       });
-      
+
       // Korea Section Animation
       gsap.from(".korea-content", {
         scrollTrigger: {
@@ -78,7 +78,7 @@ const Features: React.FC = () => {
       {/* Header Section */}
       <div className="relative py-20 md:py-28 overflow-hidden flex items-center justify-center bg-transparent">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent opacity-40"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest mb-6 font-display">
             <Globe size={14} /> Bizning Ustunligimiz
@@ -99,8 +99,8 @@ const Features: React.FC = () => {
             {FEATURES.map((feature) => {
               const Icon = Icons[feature.iconName] || Zap;
               return (
-                <div 
-                  key={feature.id} 
+                <div
+                  key={feature.id}
                   // Updated style to match About.tsx: dark-surface background for high visibility
                   className="feature-card group relative bg-dark-surface rounded-[2.5rem] p-10 border border-white/20 hover:border-primary/50 transition-all duration-500 flex flex-col h-full shadow-[0_25px_60px_rgba(0,0,0,0.8)]"
                 >
@@ -110,7 +110,7 @@ const Features: React.FC = () => {
                       <Icon size={32} strokeWidth={1.5} />
                     </div>
                   </div>
-                  
+
                   {/* Content */}
                   <div className="flex flex-col flex-grow">
                     <h3 className="text-2xl font-display font-bold text-white mb-6 leading-tight group-hover:text-primary transition-colors">
@@ -140,7 +140,7 @@ const Features: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/50 bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-widest mb-6 font-display">
                 <Plane size={12} /> GLOBAL IMKONIYATLAR
               </div>
-              
+
               {/* Title */}
               <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-6 leading-none tracking-tight">
                 Janubiy Koreya <br />
@@ -149,31 +149,31 @@ const Features: React.FC = () => {
 
               {/* Description */}
               <p className="text-base text-gray-400 mb-8 leading-relaxed max-w-xl">
-                Maktabingiz o'quvchilari uchun nafaqat IT bilimlarini, balki Koreys tili va madaniyatini o'rganish imkoniyatini yarating. Bitiruvchilar uchun Janubiy Koreyaning nufuzli universitetlariga <span className="text-secondary font-bold">100% grant</span> yutish imkoniyati.
+                Maktabingiz o'quvchilari uchun nafaqat IT bilimlarini, balki Koreys tili va madaniyatini o'rganish imkoniyatini yarating. Bitiruvchilar uchun Janubiy Koreyaning nufuzli universitetlariga <span className="text-secondary font-bold">kirishga yodram beramiz</span> .
               </p>
-              
+
               {/* Info Cards - Compact Stack */}
               <div className="space-y-4 mb-8 max-w-md">
                 {/* TOPIK Card */}
                 <div className="flex items-center gap-4 p-4 bg-dark-surface border border-white/10 rounded-2xl hover:border-secondary/50 transition-all duration-300 group cursor-default">
-                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-secondary/20 border border-secondary/30 flex items-center justify-center text-secondary group-hover:scale-110 group-hover:bg-secondary/30 transition-all">
-                     <Globe size={20} />
-                   </div>
-                   <div>
-                     <h4 className="text-white font-bold text-sm mb-0.5 group-hover:text-secondary transition-colors">TOPIK Sertifikati</h4>
-                     <p className="text-gray-500 text-xs">Xalqaro darajadagi til sertifikati tayyorgarligi</p>
-                   </div>
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-secondary/20 border border-secondary/30 flex items-center justify-center text-secondary group-hover:scale-110 group-hover:bg-secondary/30 transition-all">
+                    <Globe size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-sm mb-0.5 group-hover:text-secondary transition-colors">TOPIK Sertifikati tez olishga </h4>
+                    <p className="text-gray-500 text-xs">Xalqaro darajadagi til sertifikati tayyorgarligi</p>
+                  </div>
                 </div>
 
                 {/* Grants Card */}
                 <div className="flex items-center gap-4 p-4 bg-dark-surface border border-white/10 rounded-2xl hover:border-secondary/50 transition-all duration-300 group cursor-default">
-                   <div className="w-12 h-12 flex-shrink-0 rounded-full bg-secondary/20 border border-secondary/30 flex items-center justify-center text-secondary group-hover:scale-110 group-hover:bg-secondary/30 transition-all">
-                     <GraduationCap size={20} />
-                   </div>
-                   <div>
-                     <h4 className="text-white font-bold text-sm mb-0.5 group-hover:text-secondary transition-colors">Universitet Grantlari</h4>
-                     <p className="text-gray-500 text-xs">Top-50 Koreya universitetlariga kirish ko'magi</p>
-                   </div>
+                  <div className="w-12 h-12 flex-shrink-0 rounded-full bg-secondary/20 border border-secondary/30 flex items-center justify-center text-secondary group-hover:scale-110 group-hover:bg-secondary/30 transition-all">
+                    <GraduationCap size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-sm mb-0.5 group-hover:text-secondary transition-colors">Universitet Grantlarini yutish imkoniyati</h4>
+                    <p className="text-gray-500 text-xs">Top-50 Koreya universitetlariga kirish ko'magi</p>
+                  </div>
                 </div>
               </div>
 
@@ -185,19 +185,19 @@ const Features: React.FC = () => {
 
             {/* Visual Side */}
             <div className="korea-visual w-full lg:w-1/2">
-               <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group aspect-[4/3] lg:aspect-auto lg:h-[500px]">
-                 <img 
-                   src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200" 
-                   alt="South Korea Education Building" 
-                   className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700" 
-                 />
-                 <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-transparent to-transparent"></div>
-                 
-                 {/* Optional: Floating Badge on Image */}
-                 <div className="absolute top-6 right-6 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-xs font-medium text-white">
-                    📍 Seoul, South Korea
-                 </div>
-               </div>
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group aspect-[4/3] lg:aspect-auto lg:h-[500px]">
+                <img
+                  src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200"
+                  alt="South Korea Education Building"
+                  className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-transparent to-transparent"></div>
+
+                {/* Optional: Floating Badge on Image */}
+                <div className="absolute top-6 right-6 px-4 py-2 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-xs font-medium text-white">
+                  📍 Seoul, South Korea
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -209,13 +209,13 @@ const Features: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="detail-section w-full lg:w-1/2">
               <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 leading-tight">
-                Kelajakni <br/>
+                Kelajakni <br />
                 <span className="text-primary drop-shadow-[0_0_10px_rgba(0,243,255,0.3)]">Kafolatlang</span>
               </h2>
               <p className="text-gray-300 text-lg mb-10 leading-relaxed font-medium">
                 Bizning o'quv dasturimiz shunchaki bilim berish emas, balki o'quvchilarni real bozor talablariga tayyorlash va ularga xalqaro eshiklarni ochishga qaratilgan.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-6">
                 <div className="p-8 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl">
                   <div className="text-4xl font-display font-black text-white mb-2">70%</div>
@@ -227,12 +227,12 @@ const Features: React.FC = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="w-full lg:w-1/2 relative">
-               <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl group">
-                <img 
-                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Cyber Security" 
+              <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl group">
+                <img
+                  src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200"
+                  alt="Cyber Security"
                   className="w-full h-[450px] object-cover grayscale opacity-50 group-hover:opacity-80 group-hover:grayscale-0 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-dark/90 via-transparent to-transparent"></div>

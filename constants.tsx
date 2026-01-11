@@ -130,21 +130,21 @@ export const TEAM: TeamMember[] = [
     name: 'Prof. Hwang',
     role: 'Senior Korean Instructor',
     specialty: 'Academic Korean Expert',
-    image: 'https://loremflickr.com/400/500/asian,man,suit,2'
+    image: '/test.png'
   },
   {
     id: '4',
     name: 'Diyor',
     role: 'Robototexnika Director',
     specialty: 'Arduino & IoT Specialist',
-    image: '/public/diyor.png'
+    image: '/diyor.png'
   },
   {
     id: '3',
     name: 'Muhammad',
     role: 'Full-Stack AI Developer',
     specialty: 'Coding & AI Agent Expert',
-    image: '/public/muhammad.png'
+    image: '/muhammad.png'
   },
   {
     id: '5',
@@ -155,10 +155,10 @@ export const TEAM: TeamMember[] = [
   },
   {
     id: '6',
-    name: 'Nodirber',
+    name: 'Nodirbek',
     role: 'AI Image & Video Instructor',
     specialty: 'AI Creative Video Expert',
-    image: '/public/nodir.png'
+    image: '/nodir.png'
   },
   {
     id: '7',

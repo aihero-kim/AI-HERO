@@ -17,7 +17,7 @@ const VIDEOS: Video[] = [
         title: "AI HERO: Kelajak Ta'limi Taqdimoti",
         thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200",
         duration: "2:45",
-        url: "https://youtube.com/shorts/r-nq5Y-YsNQ?si=WoIlSBmUy4SboelK"
+        url: "https://www.youtube.com/embed/r-nq5Y-YsNQ"
     },
     {
         id: '2',
@@ -57,8 +57,7 @@ const VideoShowcase: React.FC = () => {
                         <h2 className="text-3xl md:text-5xl font-display font-bold text-white">Bizni Kuzatib Boring</h2>
                     </div>
                     <a
-                        href="https://www.youtube.com/channel/UCObxlQv9lzSgRXEN9EGUWHA"
-                        target="_blank"
+                        href="https://www.youtube.com/@aiherouz"
                         rel="noopener noreferrer"
                         className="hidden sm:inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_30px_rgba(220,38,38,0.6)]"
                     >
@@ -116,7 +115,7 @@ const VideoShowcase: React.FC = () => {
                         ))}
 
                         <a
-                            href="https://www.youtube.com/channel/UCObxlQv9lzSgRXEN9EGUWHA"
+                            href="https://www.youtube.com/watch?v=jUfH_xGiPYM"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="mt-2 w-full py-3 border border-dashed border-white/20 rounded-xl flex items-center justify-center text-gray-400 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all text-sm gap-2 sm:hidden"

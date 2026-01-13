@@ -15,9 +15,9 @@ const AstronautSVG = () => (
       {/* Backpack (Tank) */}
       <rect x="25" y="25" width="50" height="55" rx="10" fill="white" stroke="#000" strokeWidth="2.5" />
       {/* Left Leg */}
-      <path d="M40 78 L36 90 A 3 3 0 0 0 39 95 L46 93 L48 78" fill="white" stroke="#000" strokeWidth="2.5" strokeLinejoin="round"/>
+      <path d="M40 78 L36 90 A 3 3 0 0 0 39 95 L46 93 L48 78" fill="white" stroke="#000" strokeWidth="2.5" strokeLinejoin="round" />
       {/* Right Leg */}
-      <path d="M60 78 L64 90 A 3 3 0 0 1 61 95 L54 93 L52 78" fill="white" stroke="#000" strokeWidth="2.5" strokeLinejoin="round"/>
+      <path d="M60 78 L64 90 A 3 3 0 0 1 61 95 L54 93 L52 78" fill="white" stroke="#000" strokeWidth="2.5" strokeLinejoin="round" />
       {/* Main Body Suit */}
       <rect x="32" y="38" width="36" height="42" rx="8" fill="white" stroke="#000" strokeWidth="2.5" />
       {/* Chest Control Panel */}
@@ -48,7 +48,6 @@ const FloatingTeam: React.FC = () => {
       case '/': return TEAM.slice(0, 3);
       case '/dasturlar': return TEAM.slice(3, 6);
       case '/afzalliklar': return TEAM.slice(6, 9);
-      case '/aloqa': return TEAM; // Show all 9 members on Contact page
       default: return [];
     }
   }, [pathname]);
@@ -60,13 +59,13 @@ const FloatingTeam: React.FC = () => {
     const padding = 60; // Padding from edge
     const w = window.innerWidth;
     const h = window.innerHeight;
-    
+
     // Divide screen into Left Zone (0 to 20%) and Right Zone (80% to 100%)
-    const safeZoneWidth = w * 0.2; 
-    
+    const safeZoneWidth = w * 0.2;
+
     // Alternate sides based on index
     const isLeft = index % 2 === 0;
-    
+
     let x;
     if (isLeft) {
       x = padding + Math.random() * (safeZoneWidth - padding);
@@ -79,7 +78,7 @@ const FloatingTeam: React.FC = () => {
     const verticalPadding = 100;
     const availableHeight = h - (verticalPadding * 2);
     const segmentH = availableHeight / total;
-    
+
     // Distribute evenly then add jitter
     // If total is large (9), we might need to reset Y for left/right independently to avoid gaps
     // But simple distribution works if we assume L/R alternating
@@ -93,101 +92,105 @@ const FloatingTeam: React.FC = () => {
 
     // Small timeout to ensure DOM is ready and window dimensions are correct
     const timer = setTimeout(() => {
-        const ctx = gsap.context(() => {
+      const ctx = gsap.context(() => {
         visibleMembers.forEach((member, index) => {
-            const element = document.getElementById(`astro-${member.id}`);
-            if (!element) return;
+          const element = document.getElementById(`astro-${member.id}`);
+          if (!element) return;
 
-            // 1. Initial Position
-            const { x, y } = getSafePosition(index, visibleMembers.length);
-            
-            gsap.set(element, {
+          // 1. Initial Position
+          const { x, y } = getSafePosition(index, visibleMembers.length);
+
+          gsap.set(element, {
             x: x,
             y: y,
             rotation: Math.random() * 10 - 5,
             opacity: 0,
             scale: 0
-            });
+          });
 
-            // 2. Intro Animation - Faster delay (0.1 instead of 0.3) for quicker appearance
-            gsap.to(element, {
+          // 2. Intro Animation - Faster delay (0.1 instead of 0.3) for quicker appearance
+          gsap.to(element, {
             opacity: 1,
             scale: 1,
             duration: 1.2,
-            delay: index * 0.1, 
+            delay: index * 0.1,
             ease: "elastic.out(1, 0.7)"
-            });
+          });
 
-            // 3. Define the Floating Animation Function
-            const startFloating = () => {
+          // 3. Define the Floating Animation Function
+          const startFloating = () => {
             gsap.to(element, {
-                x: `+=${Math.random() * 60 - 30}`,
-                duration: 10 + Math.random() * 8,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                id: `floatX-${member.id}`
-            });
-
-            gsap.to(element, {
-                y: `+=${Math.random() * 60 - 30}`,
-                duration: 8 + Math.random() * 6,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                delay: Math.random() * 2,
-                id: `floatY-${member.id}`
+              x: `+=${Math.random() * 60 - 30}`,
+              duration: 10 + Math.random() * 8,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+              id: `floatX-${member.id}`
             });
 
             gsap.to(element, {
-                rotation: Math.random() * 10 - 5,
-                duration: 5 + Math.random() * 5,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut",
-                id: `floatRot-${member.id}`
+              y: `+=${Math.random() * 60 - 30}`,
+              duration: 8 + Math.random() * 6,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+              delay: Math.random() * 2,
+              id: `floatY-${member.id}`
             });
-            };
 
-            // Start initial float
-            startFloating();
+            gsap.to(element, {
+              rotation: Math.random() * 10 - 5,
+              duration: 5 + Math.random() * 5,
+              repeat: -1,
+              yoyo: true,
+              ease: "sine.inOut",
+              id: `floatRot-${member.id}`
+            });
+          };
 
-            // 4. Initialize Draggable
-            Draggable.create(element, {
+          // Start initial float
+          startFloating();
+
+          // 4. Initialize Draggable
+          Draggable.create(element, {
             type: "x,y",
-            bounds: { 
-                top: 20, 
-                left: 20, 
-                width: window.innerWidth - 40, 
-                height: window.innerHeight - 40 
+            bounds: {
+              top: 20,
+              left: 20,
+              width: window.innerWidth - 40,
+              height: window.innerHeight - 40
             },
             inertia: true,
             edgeResistance: 0.8,
-            onPress: function() {
-                gsap.killTweensOf(element);
-                gsap.to(element, {
+            onPress: function () {
+              gsap.killTweensOf(element);
+              gsap.to(element, {
                 scale: 1.1,
                 duration: 0.2,
                 ease: "back.out"
-                });
+              });
             },
-            onRelease: function() {
-                gsap.to(element, {
+            onRelease: function () {
+              gsap.to(element, {
                 scale: 1,
                 duration: 0.2
-                });
-                startFloating();
+              });
+              startFloating();
             }
-            });
+          });
 
         });
-        }, containerRef);
+      }, containerRef);
     }, 100);
 
     return () => clearTimeout(timer); // Cleanup is handled by context but timeout needs clearing
   }, [visibleMembers, pathname]);
 
-  const handleMouseEnter = (id: string) => {
+  // State for smart tooltip positioning
+  const [tooltipState, setTooltipState] = React.useState<{ id: string; placement: 'top' | 'bottom' | 'left' | 'right' } | null>(null);
+
+  const handleMouseEnter = (id: string, e: React.MouseEvent<HTMLDivElement>) => {
+    // GSAP Animation
     const selector = `#astro-${id}`;
     gsap.to(selector, {
       scale: 1.3,
@@ -197,9 +200,35 @@ const FloatingTeam: React.FC = () => {
       duration: 0.4,
       ease: "power2.out"
     });
+
+    // Smart Positioning Logic
+    const element = e.currentTarget;
+    const rect = element.getBoundingClientRect();
+    const w = window.innerWidth;
+
+    const spaceTop = rect.top;
+    const spaceLeft = rect.left;
+    const spaceRight = w - rect.right;
+
+    // Thresholds
+    const TOP_THRESHOLD = 220; // Height of card + padding
+    const SIDE_THRESHOLD = 130; // Half width of card + padding
+
+    let placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+
+    if (spaceLeft < SIDE_THRESHOLD) {
+      placement = 'right';
+    } else if (spaceRight < SIDE_THRESHOLD) {
+      placement = 'left';
+    } else if (spaceTop < TOP_THRESHOLD) {
+      placement = 'bottom';
+    }
+
+    setTooltipState({ id, placement });
   };
 
   const handleMouseLeave = (id: string) => {
+    // GSAP Animation
     const selector = `#astro-${id}`;
     gsap.to(selector, {
       scale: 1,
@@ -208,6 +237,8 @@ const FloatingTeam: React.FC = () => {
       duration: 0.4,
       ease: "power2.out"
     });
+
+    setTooltipState(null);
   };
 
   if (visibleMembers.length === 0) return null;
@@ -219,19 +250,42 @@ const FloatingTeam: React.FC = () => {
           key={member.id}
           id={`astro-${member.id}`}
           className="absolute w-12 h-12 md:w-16 md:h-16 pointer-events-auto cursor-grab active:cursor-grabbing group touch-none"
-          onMouseEnter={() => handleMouseEnter(member.id)}
+          onMouseEnter={(e) => handleMouseEnter(member.id, e)}
           onMouseLeave={() => handleMouseLeave(member.id)}
         >
           <AstronautSVG />
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 pointer-events-none z-[101]">
-            <div className="bg-dark/90 backdrop-blur-xl border border-primary/40 p-3 rounded-xl shadow-[0_0_20px_rgba(0,243,255,0.2)] text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60"></div>
-              <div className="w-10 h-10 mx-auto mb-2 rounded-full overflow-hidden border-2 border-primary shadow-[0_0_10px_rgba(0,243,255,0.3)] relative z-10">
+
+          {/* Smart Tooltip */}
+          <div
+            className={`absolute w-48 transition-all duration-300 pointer-events-none z-[101] ${tooltipState?.id === member.id ? 'opacity-100 visible' : 'opacity-0 invisible'
+              } ${tooltipState?.id === member.id && tooltipState.placement === 'bottom'
+                ? 'top-full left-1/2 -translate-x-1/2 mt-4'
+                : tooltipState?.id === member.id && tooltipState.placement === 'left'
+                  ? 'right-full top-1/2 -translate-y-1/2 mr-4'
+                  : tooltipState?.id === member.id && tooltipState.placement === 'right'
+                    ? 'left-full top-1/2 -translate-y-1/2 ml-4'
+                    : 'bottom-full left-1/2 -translate-x-1/2 mb-4' // Default Top
+              }`}
+          >
+            <div className="bg-dark/90 backdrop-blur-xl border border-primary/40 p-3 rounded-xl shadow-[0_0_20px_rgba(0,243,255,0.2)] text-center relative overflow-visible">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-60 rounded-t-xl"></div>
+
+              <div className="w-12 h-12 mx-auto mb-2 rounded-full overflow-hidden border-2 border-primary shadow-[0_0_10px_rgba(0,243,255,0.3)] relative z-10 bg-dark">
                 <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
               </div>
-              <h4 className="text-white font-display font-bold text-sm leading-tight mb-0.5">{member.name}</h4>
-              <p className="text-[9px] text-primary uppercase tracking-wider font-bold">{member.role}</p>
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-primary/40"></div>
+
+              <h4 className="text-white font-display font-bold text-sm leading-tight mb-1">{member.name}</h4>
+              <p className="text-[10px] text-primary uppercase tracking-wider font-bold leading-snug">{member.role}</p>
+
+              {/* Arrow */}
+              <div className={`absolute w-0 h-0 border-[6px] border-transparent ${tooltipState?.id === member.id && tooltipState.placement === 'bottom'
+                  ? '-top-3 left-1/2 -translate-x-1/2 border-b-primary/40'
+                  : tooltipState?.id === member.id && tooltipState.placement === 'left'
+                    ? '-right-3 top-1/2 -translate-y-1/2 border-l-primary/40'
+                    : tooltipState?.id === member.id && tooltipState.placement === 'right'
+                      ? '-left-3 top-1/2 -translate-y-1/2 border-r-primary/40'
+                      : '-bottom-3 left-1/2 -translate-x-1/2 border-t-primary/40'
+                }`}></div>
             </div>
           </div>
         </div>

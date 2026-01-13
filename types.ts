@@ -28,7 +28,8 @@ export interface Feature {
   id: string;
   title: string;
   description: string;
-  iconName: 'Award' | 'Users' | 'TrendingUp' | 'Zap' | 'Brain' | 'Rocket';
+  iconName: 'Award' | 'Users' | 'TrendingUp' | 'Zap' | 'Brain' | 'Rocket' | 'ShieldCheck' | 'GraduationCap' | 'Languages';
+  image?: string;
 }
 
 export interface TeamMember {

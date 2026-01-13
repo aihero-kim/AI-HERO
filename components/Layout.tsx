@@ -9,7 +9,7 @@ import FloatingTeam from './FloatingTeam';
 
 // Updated Logo to use the uploaded image
 // Note: Ensure your image file is named 'logo.png' and placed in the public/root directory
-const Logo = ({ className, size = 24 }: { className?: string; size?: number }) => (
+const Logo = ({ className, size = 40 }: { className?: string; size?: number }) => (
   <img
     src="/logo.png"
     alt="AI HERO"
@@ -23,9 +23,10 @@ const Layout: React.FC = () => {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
-  // Close menu when route changes
+  // Close menu and scroll to top when route changes
   useEffect(() => {
     setIsMenuOpen(false);
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   // Scroll effect for header
@@ -45,21 +46,18 @@ const Layout: React.FC = () => {
 
       {/* Sticky Header */}
       <header
-        className={`fixed top-0 z-50 w-full transition-all duration-300 border-b ${scrolled
-            ? 'bg-dark/80 backdrop-blur-md border-white/10 py-3'
-            : 'bg-transparent border-transparent py-6'
+        className={`fixed top-0 z-50 w-full transition-all duration-300 border-b flex items-center ${scrolled
+          ? 'bg-dark/80 backdrop-blur-md border-white/10 h-16'
+          : 'bg-transparent border-transparent h-20'
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex justify-between items-center">
-            {/* Logo - Reduced Size by ~30% as requested previously */}
+            {/* Logo */}
             <NavLink to="/" className="flex items-center gap-3 group relative hover-trigger">
-              <div className="relative flex items-center justify-center">
-                <div className="absolute inset-0 bg-primary/40 blur-xl rounded-full group-hover:bg-primary/60 transition-all"></div>
-                <Logo size={80} className="relative z-10 drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]" />
-              </div>
-              <span className="text-lg font-display font-bold tracking-wider text-white">
-                AI <span className="text-primary drop-shadow-[0_0_5px_rgba(0,243,255,0.8)]">HERO</span>
+              <Logo size={40} className="relative z-10" />
+              <span className="text-lg font-display font-bold tracking-wider text-white flex items-center">
+                AI <span className="text-primary ml-1 drop-shadow-[0_0_5px_rgba(0,243,255,0.8)]">HERO</span>
               </span>
             </NavLink>
 
@@ -150,8 +148,8 @@ const Layout: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             {/* Brand */}
             <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <Logo size={40} />
+              <div className="flex items-center gap-4 mb-6">
+                <Logo size={60} />
                 <span className="text-2xl font-display font-bold text-white">AI HERO</span>
               </div>
               <p className="text-gray-400 mb-8 max-w-sm leading-relaxed">

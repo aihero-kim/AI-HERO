@@ -1,12 +1,26 @@
 
 import React, { useLayoutEffect, useRef } from 'react';
-import { ArrowRight, ChevronRight, Star, Cpu, Rocket, Zap, Bot, Languages, Video, Award, Brain, CheckCircle, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowRight, Star, Cpu, Rocket, Zap, Video, Award, Brain, CheckCircle, Mail, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { PROGRAMS, STATS, FEATURES } from '../constants';
 import VideoShowcase from '../components/VideoShowcase';
 import TeamCarousel from '../components/TeamCarousel';
+import ProgramCard from '../components/ProgramCard';
+import { SplineScene } from "../components/ui/splite";
+import { Spotlight } from "../components/ui/spotlight";
+import { AnimatedProfileCard, ProfileCardContent } from '../components/ui/animated-profile-card';
+
+const FeatureIcons: Record<string, React.ElementType> = {
+  Zap: Zap,
+  Rocket: Rocket,
+  Award: Award,
+  Brain: Brain
+};
+
+const FEATURE_COLORS = ['#06f414', '#bc13fe', '#00f3ff', '#3b82f6'];
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -129,7 +143,10 @@ const Home: React.FC = () => {
   return (
     <div ref={containerRef} className="overflow-hidden bg-transparent">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 lg:pt-20 pb-20 bg-transparent">
+      <section className="relative pt-24 pb-18 bg-transparent overflow-hidden">
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+        />
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/5 rounded-full blur-[180px]"></div>
         </div>
@@ -163,52 +180,26 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Visual Image */}
-            <div className="hero-visual relative order-1 lg:order-2 perspective-1000">
-              <div className="hero-visual-inner relative z-10 rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/10 transition-transform duration-100 transform-style-3d bg-dark-surface">
-                <img
-                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200"
-                  alt="AI Education Future"
-                  loading="eager"
-                  className="w-full h-auto object-cover opacity-90 mix-blend-screen"
+            {/* Right Visual Image - 3D Spline */}
+            <div className="hero-visual relative order-1 lg:order-2 h-[650px] w-full -mt-20 lg:-mr-20">
+              <div className="relative w-full h-full flex items-center justify-center">
+                <SplineScene
+                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                  className="w-full h-full"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent"></div>
-
-                {/* Floating Cards */}
-                <div className="absolute bottom-8 left-8 p-3.5 bg-dark/90 backdrop-blur-2xl border border-white/10 rounded-xl flex items-center gap-3 animate-float shadow-2xl transform translate-z-30">
-                  <div className="w-8 h-8 bg-secondary/30 rounded-lg flex items-center justify-center text-secondary border border-secondary/20">
-                    <Cpu size={16} />
-                  </div>
-                  <div>
-                    <div className="text-[8px] text-gray-500 uppercase font-display tracking-widest mb-0.5">AI Agent</div>
-                    <div className="font-bold text-white text-sm leading-none">n8n & Genspark</div>
-                  </div>
-                </div>
-
-                <div className="absolute top-8 right-8 p-3.5 bg-dark/90 backdrop-blur-2xl border border-white/10 rounded-xl flex items-center gap-3 animate-float shadow-2xl transform translate-z-30" style={{ animationDelay: '1.5s' }}>
-                  <div className="w-8 h-8 bg-primary/30 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                    <Video size={16} />
-                  </div>
-                  <div>
-                    <div className="text-[8px] text-gray-500 uppercase font-display tracking-widest mb-0.5">AI Creative</div>
-                    <div className="font-bold text-white text-sm leading-none">VEO 3 & SORA 2</div>
-                  </div>
-                </div>
               </div>
-
-              <div className="absolute -inset-6 border border-primary/20 rounded-[2.5rem] rotate-3 z-0"></div>
-              <div className="absolute -inset-6 border border-secondary/20 rounded-[2.5rem] -rotate-2 z-0"></div>
             </div>
           </div>
         </div>
       </section>
 
+
       {/* 2. Stats Section */}
-      <section className="stats-section py-12 relative z-20 bg-transparent border-t border-white/5">
+      < section className="stats-section py-12 relative z-20 bg-transparent border-t border-white/5" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {STATS.map((stat, index) => (
-              <div key={index} className="stat-item relative p-6 bg-dark-lighter/50 backdrop-blur-md border border-white/5 rounded-[1.5rem] group hover:bg-white/5 transition-colors text-center">
+              <div key={index} className="stat-item relative p-6 bg-black/40 border border-white/5 rounded-[1.5rem] group hover:bg-white/5 transition-colors text-center shadow-[0_0_20px_rgba(0,0,0,0.5)]">
                 <div className="text-5xl md:text-6xl font-display font-black text-white/90 mb-2 group-hover:text-primary transition-all">
                   {stat.value}<span className="text-2xl align-top text-primary">{stat.suffix}</span>
                 </div>
@@ -217,28 +208,55 @@ const Home: React.FC = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 3. Advantages Preview Section */}
-      <section className="advantages-section py-20 relative bg-dark/30">
+      < section className="advantages-section py-20 relative bg-dark/30" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-primary font-bold tracking-widest uppercase text-xs mb-3 block">Nega Aynan Biz?</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold text-white">AI HERO Afzalliklari</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {FEATURES.map((feature, idx) => (
-              <div key={idx} className="advantage-item group p-8 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-2">
-                <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-black transition-colors">
-                  {feature.iconName === 'Zap' && <Zap size={28} />}
-                  {feature.iconName === 'Rocket' && <Rocket size={28} />}
-                  {feature.iconName === 'Award' && <Award size={28} />}
-                  {feature.iconName === 'Brain' && <Brain size={28} />}
+            {FEATURES.map((feature, idx) => {
+              const Icon = FeatureIcons[feature.iconName] || Zap;
+              return (
+                <div key={idx} className="advantage-item">
+                  <AnimatedProfileCard
+                    accentColor={FEATURE_COLORS[idx % FEATURE_COLORS.length]}
+                    onAccentForegroundColor="#000000"
+                    onAccentMutedForegroundColor="#333333"
+                    baseCard={
+                      <ProfileCardContent
+                        name={feature.title}
+                        location="AFZALLIK"
+                        bio={feature.description}
+                        avatarSrc={feature.image || ""}
+                        avatarFallback={<Icon size={32} strokeWidth={1.5} />}
+                        showAvatar={true}
+                        className="bg-black/20 border-white/10 hover:shadow-primary/10 transition-shadow"
+                      />
+                    }
+                    overlayCard={
+                      <ProfileCardContent
+                        name={feature.title}
+                        location="AI HERO"
+                        bio={feature.description}
+                        avatarSrc={feature.image || ""}
+                        avatarFallback={<Icon size={32} strokeWidth={1.5} />}
+                        showAvatar={true}
+                        variant="on-accent"
+                        cardStyle={{ backgroundColor: FEATURE_COLORS[idx % FEATURE_COLORS.length] }}
+                        titleStyle={{ color: '#000' }}
+                        descriptionClassName="text-black/60"
+                        bioClassName="text-black/80"
+                      />
+                    }
+
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6">{feature.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="text-center mt-12">
             <Link to="/afzalliklar" className="inline-flex items-center gap-2 text-primary font-bold hover:text-white transition-colors">
@@ -246,10 +264,10 @@ const Home: React.FC = () => {
             </Link>
           </div>
         </div>
-      </section>
+      </section >
 
       {/* 4. Programs Preview Section */}
-      <section className="programs-section py-24 bg-transparent relative overflow-hidden">
+      < section className="programs-section py-24 bg-transparent relative overflow-hidden" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
             <div>
@@ -271,53 +289,29 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {PROGRAMS.map((program, index) => (
-              <div key={program.id} className="program-card group bg-dark-lighter/40 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/5 hover:border-primary/30 transition-all duration-500 h-full flex flex-col shadow-xl">
-                <div className="relative h-56 overflow-hidden">
-                  <img src={program.image} alt={program.title} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
-                  {/* Icon Overlay */}
-                  <div className="absolute top-4 left-4 w-10 h-10 bg-dark/80 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/10 z-10">
-                    {index === 0 && <Cpu size={20} className="text-primary" />}
-                    {index === 1 && <Bot size={20} className="text-primary" />}
-                    {index === 2 && <Languages size={20} className="text-primary" />}
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-80"></div>
-                </div>
-                <div className="p-8 pt-4 flex flex-col flex-grow relative">
-                  {/* Badge */}
-                  <div className="absolute -top-4 right-6 bg-primary text-black text-[9px] font-bold uppercase px-3 py-1.5 rounded-full">
-                    {program.subtitle}
-                  </div>
-
-                  <h3 className="text-2xl font-display font-bold text-white mb-3 mt-2">{program.title}</h3>
-                  <p className="text-gray-400 mb-6 text-sm leading-relaxed line-clamp-3">{program.description}</p>
-
-                  <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                    <Link to="/dasturlar" className="text-xs font-bold uppercase tracking-widest text-white hover:text-primary transition-colors flex items-center gap-2">
-                      Batafsil <ChevronRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <ProgramCard key={program.id} program={program} index={index} />
             ))}
           </div>
         </div>
-      </section>
+      </section >
 
       {/* Team Scroll Section */}
-      <TeamCarousel />
+      < TeamCarousel />
 
       {/* Video Section */}
-      <div className="video-section">
+      < div className="video-section" >
         <div className="video-section-anim">
           <VideoShowcase />
         </div>
-      </div>
+      </div >
 
       {/* 5. About Preview Section */}
-      <section className="about-section py-20 relative border-y border-white/5 bg-white/5">
+      <section className="about-section py-24 relative border-y border-white/5 bg-black/20">
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="about-content">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            <div className="about-content w-full lg:w-1/2">
+
               <span className="text-secondary font-bold tracking-widest uppercase text-xs mb-3 block">Bizning Missiyamiz</span>
               <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">O'zbekistonni AI Markaziga Aylantirish</h2>
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
@@ -341,46 +335,169 @@ const Home: React.FC = () => {
                 Batafsil ma'lumot <ArrowRight size={18} />
               </Link>
             </div>
-            <div className="about-visual relative">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800" alt="Team working" className="w-full h-auto opacity-80" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent mix-blend-overlay"></div>
+            <div className="about-visual w-full lg:w-1/2 relative group perspective-1000">
+
+              <div className="relative w-full aspect-square transition-transform ease-out">
+
+                {/* Neon Glow Effect - Matching Programs.tsx */}
+                <div className="absolute -inset-1 bg-gradient-to-br from-primary to-blue-600 rounded-3xl opacity-40 blur-lg group-hover:opacity-80 transition duration-1000"></div>
+
+                {/* Video Container */}
+                <div
+                  className="relative rounded-3xl overflow-hidden border border-white/10 bg-black/40 h-full shadow-2xl hover:shadow-primary/10 transition-shadow"
+                  onMouseEnter={() => {
+                    const video = document.getElementById('about-video') as HTMLVideoElement;
+                    if (video) {
+                      video.muted = false;
+                      video.play().catch(e => {
+                        console.error('Video play failed:', e);
+                        // Fallback to muted if unmuted fails
+                        video.muted = true;
+                        video.play().catch(err => console.error('Muted fallback failed', err));
+                      });
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    const video = document.getElementById('about-video') as HTMLVideoElement;
+                    if (video) {
+                      video.pause();
+                      video.currentTime = 0;
+                      video.muted = true;
+                    }
+                  }}
+                >
+                  <video
+                    id="about-video"
+                    src="/AI leader.mp4"
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent opacity-90"></div>
+
+                  {/* Overlay Badge similar to Programs */}
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 text-white text-xs font-bold uppercase tracking-wider mb-2">
+                      <Award size={14} className="text-primary" />
+                      Innovatsion Yondashuv
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-dark/90 backdrop-blur-xl border border-white/10 rounded-xl p-6 flex flex-col justify-center shadow-2xl">
+
+              <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-dark/90 backdrop-blur-xl border border-white/10 rounded-2xl p-5 flex flex-col justify-center shadow-2xl z-20 group-hover:translate-y-2 transition-transform duration-500">
                 <div className="text-4xl font-black text-primary mb-1">100+</div>
-                <div className="text-gray-400 text-sm font-medium">Muvaffaqiyatli Bitiruvchilar</div>
+                <div className="text-gray-400 text-xs font-bold uppercase tracking-wide">Muvaffaqiyatli Bitiruvchilar</div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section >
 
-      {/* 6. Contact / Call to Action Section */}
-      <section className="cta-section py-24 relative flex items-center justify-center bg-transparent">
-        <div className="cta-content relative z-10 max-w-4xl mx-auto px-4 w-full">
-          <div className="bg-gradient-to-br from-dark-lighter to-dark border border-white/10 rounded-3xl p-8 md:p-12 text-center shadow-[0_0_50px_rgba(0,243,255,0.15)] relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/3"></div>
+      {/* 6. Contact / Call to Action Section (Redesigned) */}
+      <section className="cta-section py-24 relative overflow-hidden bg-transparent border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
 
-            <h2 className="text-3xl md:text-5xl font-display font-black text-white mb-6 relative z-10">
-              Siz Ham <span className="text-primary">AI HERO</span> Bo'lishga Tayyormisiz?
-            </h2>
-            <p className="text-gray-400 mb-10 text-lg relative z-10 max-w-2xl mx-auto">
-              Hoziroq ro'yxatdan o'ting va birinchi darsga bepul qatnashing. Kelajagingizni bugun quring!
-            </p>
+            {/* Left: Visual Content */}
+            <div className="cta-visual w-full lg:w-1/2 relative group">
+              {/* Neon Glow Effect */}
+              <div className="absolute -inset-1 bg-gradient-to-br from-primary to-blue-600 rounded-3xl opacity-30 blur-lg group-hover:opacity-50 transition duration-1000"></div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-              <Link to="/aloqa" className="w-full sm:w-auto px-8 py-4 bg-primary text-black font-bold uppercase tracking-widest rounded-lg hover:bg-white transition-all shadow-lg hover:shadow-primary/50">
-                Ariza Qoldirish
-              </Link>
-              <a href="tel:+998901234567" className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest rounded-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                <Phone size={18} /> Qo'ng'iroq Qilish
-              </a>
+              <div
+                className="relative rounded-3xl overflow-hidden border border-white/10 bg-black/40 aspect-square shadow-2xl hover:shadow-primary/10 transition-shadow"
+                onMouseEnter={() => {
+                  const video = document.getElementById('cta-video') as HTMLVideoElement;
+                  if (video) {
+                    video.muted = false;
+                    video.play().catch(e => {
+                      console.error('Video play failed:', e);
+                      // Fallback
+                      video.muted = true;
+                      video.play().catch(err => console.error('Muted fallback failed', err));
+                    });
+                  }
+                }}
+                onMouseLeave={() => {
+                  const video = document.getElementById('cta-video') as HTMLVideoElement;
+                  if (video) {
+                    video.pause();
+                    video.currentTime = 0;
+                    video.muted = true;
+                  }
+                }}
+              >
+                <video
+                  id="cta-video"
+                  src="/AI HERO.mp4"
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-[58%_50%] opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-transparent"></div>
+
+                {/* Overlay Badge */}
+                <div className="absolute top-6 left-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/20 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-wider">
+                    <Zap size={14} /> Join the community
+                  </div>
+                </div>
+              </div>
+
+              {/* Decorative Frame */}
+              <div className="absolute -inset-4 border border-primary/20 rounded-[2.5rem] -rotate-1 -z-10 blur-[1px]"></div>
             </div>
+
+            {/* Right: Text Content */}
+            <div className="cta-content w-full lg:w-1/2">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-primary text-[10px] font-bold uppercase tracking-widest mb-6 font-display">
+                Kelajakni Bugun Quring
+              </div>
+
+              <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-[1.1] tracking-tight">
+                Siz Ham <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400 drop-shadow-[0_0_10px_rgba(0,243,255,0.4)]">AI HERO</span> <br />
+                Bo'lishga Tayyormisiz?
+              </h2>
+
+              <p className="text-gray-400 text-lg leading-relaxed mb-10 max-w-xl">
+                Hoziroq ro'yxatdan o'ting va birinchi darsga bepul qatnashing. Bizning zamonaviy o'quv dasturimiz sizga xalqaro standartlardagi bilimlarni taqdim etadi.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                <div className="flex items-center gap-3 text-gray-400">
+                  <CheckCircle size={20} className="text-primary" />
+                  <span className="text-sm font-medium">Professional AI Dasturlari</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-400">
+                  <CheckCircle size={20} className="text-primary" />
+                  <span className="text-sm font-medium">Koreys Tili & Visa Yordami</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-400">
+                  <CheckCircle size={20} className="text-primary" />
+                  <span className="text-sm font-medium">Amaliy Loyiha & Portfolio</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-400">
+                  <CheckCircle size={20} className="text-primary" />
+                  <span className="text-sm font-medium">Karyera Markazi Ko'magi</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-5">
+                <Link to="/aloqa" className="w-full sm:w-auto group relative inline-flex justify-center items-center gap-3 px-8 py-4 bg-primary text-black font-bold uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-[0_0_20px_rgba(0,243,255,0.3)] hover:shadow-primary/50">
+                  Ariza Qoldirish <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <a href="tel:+998901234567" className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                  <Phone size={18} /> Aloqa
+                </a>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
-    </div>
+    </div >
   );
 };
 

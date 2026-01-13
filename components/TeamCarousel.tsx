@@ -54,16 +54,11 @@ const TeamCarousel: React.FC = () => {
                 {/* Carousel */}
                 <div className="team-carousel-wrapper">
                     <Swiper
-                        modules={[Autoplay, Pagination, Navigation]}
+                        modules={[Pagination, Navigation]}
                         spaceBetween={30}
                         slidesPerView={1}
-                        loop={true}
-                        speed={1000} // Smoother transition
-                        autoplay={{
-                            delay: 3000,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true
-                        }}
+                        loop={false}
+                        speed={800}
                         pagination={{
                             clickable: true,
                             dynamicBullets: true,
@@ -96,7 +91,7 @@ const TeamCarousel: React.FC = () => {
                                         <img
                                             src={member.image}
                                             alt={member.name}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            className="w-full h-full object-cover object-top transition-all duration-700"
                                         />
 
                                         {/* Overlay Socials */}

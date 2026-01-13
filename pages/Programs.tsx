@@ -4,6 +4,7 @@ import { Cpu, Bot, Languages, CheckCircle, Zap, Calendar, Clock, Banknote, Spark
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { PROGRAMS } from '../constants';
+import { OrbitGallery } from '../components/ui/3d-orbit-gallery';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +23,7 @@ const Programs: React.FC = () => {
       cards.forEach((card: any) => {
         // Set initial state
         gsap.set(card, { y: 30, opacity: 0 });
-        
+
         // Animate to visible state
         gsap.to(card, {
           scrollTrigger: {
@@ -85,7 +86,7 @@ const Programs: React.FC = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-primary/10 rounded-[100%] blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+
         <div className="text-center max-w-4xl mx-auto mb-24">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-secondary/30 bg-secondary/10 text-secondary text-xs font-bold uppercase tracking-widest mb-4">
             <Zap size={14} /> Global Standard
@@ -104,39 +105,77 @@ const Programs: React.FC = () => {
             const isEven = index % 2 === 0;
 
             return (
-              <div 
-                key={program.id} 
+              <div
+                key={program.id}
                 className={`program-section flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-center`}
               >
                 {/* Visual Side - 1:1 Aspect Ratio Frame */}
-                <div 
-                  className="w-full lg:w-5/12 group perspective-1000" 
+                <div
+                  className="w-full lg:w-5/12 group perspective-1000"
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="tilt-content relative w-full aspect-square transition-transform ease-out">
                     <div className={`absolute -inset-1 bg-gradient-to-br ${isEven ? 'from-primary to-blue-600' : 'from-secondary to-purple-600'} rounded-3xl opacity-40 blur-lg group-hover:opacity-80 transition duration-1000`}></div>
                     <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-dark-surface h-full shadow-2xl">
-                       <img 
-                        src={program.image} 
-                        alt={program.title} 
-                        loading="lazy"
-                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
-                      />
+                      {program.image.endsWith('.mp4') ? (
+                        <video
+                          src={program.image}
+                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
+                          loop
+                          muted
+                          playsInline
+                          ref={(el) => {
+                            if (el) {
+                              const card = el.closest('.program-section')?.querySelector('.group') as HTMLElement;
+                              if (card) {
+                                // Remove old listeners to prevent duplicates if ref re-runs
+                                // Note: This simple approach doesn't easily remove anonymous functions.
+                                // Ideal would be useEffect, but sticking to inline ref style for minimal diff:
+                                // We'll just assign `onmouseenter` property if possible, or accept that this is a quick fix.
+                                // Actually, standard querySelector might return different element references? No.
+                                // Let's just update the logic.
+
+                                card.onmouseenter = () => {
+                                  el.muted = false;
+                                  el.volume = 0.5; // Set volume to 50% as requested
+                                  el.play().catch((e) => {
+                                    console.error("Audio play failed, falling back to muted", e);
+                                    el.muted = true;
+                                    el.play().catch(err => console.error("Muted play failed", err));
+                                  });
+                                };
+                                card.onmouseleave = () => {
+                                  el.pause();
+                                  el.currentTime = 0;
+                                  el.muted = true;
+                                };
+                              }
+                            }
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src={program.image}
+                          alt={program.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition duration-700"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-90"></div>
-                      
+
                       {/* Tech Stack overlay */}
                       <div className="absolute bottom-0 left-0 w-full p-8 z-10">
                         <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex items-center justify-center text-white shadow-xl mb-6">
-                            <Icon size={32} className={isEven ? 'text-primary' : 'text-secondary'} />
+                          <Icon size={32} className={isEven ? 'text-primary' : 'text-secondary'} />
                         </div>
-                        
+
                         <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-3 drop-shadow-md">O'rganiladigan Vositalar:</h4>
                         <div className="flex flex-wrap gap-2">
                           {program.tools?.map((tool, i) => (
-                             <span key={i} className="px-3 py-1 rounded-full bg-black/40 border border-white/10 text-xs font-medium text-gray-200 backdrop-blur-md">
-                               {tool}
-                             </span>
+                            <span key={i} className="px-3 py-1 rounded-full bg-black/40 border border-white/10 text-xs font-medium text-gray-200 backdrop-blur-md">
+                              {tool}
+                            </span>
                           ))}
                         </div>
                       </div>
@@ -147,16 +186,16 @@ const Programs: React.FC = () => {
                 {/* Info Side */}
                 <div className="w-full lg:w-7/12 flex flex-col justify-center">
                   <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-2">
-                     {program.title}
+                    {program.title}
                   </h3>
                   <p className="text-lg text-secondary font-medium mb-6">{program.subtitle}</p>
-                  
+
                   <p className="text-gray-400 text-lg leading-relaxed mb-8 border-l-4 border-white/10 pl-6">
                     {program.description}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                     {/* Curriculum */}
+                    {/* Curriculum */}
                     <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-primary/30 transition-colors">
                       <h4 className="font-display font-bold text-white mb-4 flex items-center gap-2">
                         <Sparkles size={18} className="text-primary" />
@@ -176,31 +215,31 @@ const Programs: React.FC = () => {
                     <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-secondary/30 transition-colors flex flex-col justify-between">
                       <div>
                         <h4 className="font-display font-bold text-white mb-4 flex items-center gap-2">
-                            <Calendar size={18} className="text-secondary" />
-                            Dars Jadvali
+                          <Calendar size={18} className="text-secondary" />
+                          Dars Jadvali
                         </h4>
                         <div className="space-y-4">
-                            <div className="flex gap-3">
-                                <Clock size={16} className="text-gray-500 mt-1" />
-                                <div>
-                                    <span className="block text-white text-sm font-bold">Ekspert (Haftada 3 kun)</span>
-                                    <span className="text-gray-400 text-xs">{program.schedule?.expert}</span>
-                                    {program.pricing && <div className="text-primary text-xs mt-1 font-mono">{program.pricing.expert}</div>}
-                                </div>
+                          <div className="flex gap-3">
+                            <Clock size={16} className="text-gray-500 mt-1" />
+                            <div>
+                              <span className="block text-white text-sm font-bold">Ekspert (Haftada 3 kun)</span>
+                              <span className="text-gray-400 text-xs">{program.schedule?.expert}</span>
+                              {program.pricing && <div className="text-primary text-xs mt-1 font-mono">{program.pricing.expert}</div>}
                             </div>
-                            <div className="flex gap-3">
-                                <Clock size={16} className="text-gray-500 mt-1" />
-                                <div>
-                                    <span className="block text-white text-sm font-bold">Xobbi (Haftada 2 kun)</span>
-                                    <span className="text-gray-400 text-xs">{program.schedule?.hobby}</span>
-                                    {program.pricing && <div className="text-primary text-xs mt-1 font-mono">{program.pricing.hobby}</div>}
-                                </div>
+                          </div>
+                          <div className="flex gap-3">
+                            <Clock size={16} className="text-gray-500 mt-1" />
+                            <div>
+                              <span className="block text-white text-sm font-bold">Xobbi (Haftada 2 kun)</span>
+                              <span className="text-gray-400 text-xs">{program.schedule?.hobby}</span>
+                              {program.pricing && <div className="text-primary text-xs mt-1 font-mono">{program.pricing.hobby}</div>}
                             </div>
+                          </div>
                         </div>
                       </div>
                       <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-2 text-xs text-gray-500">
-                         <Banknote size={14} />
-                         <span>Davomiyligi: <span className="text-white">{program.schedule?.duration}</span></span>
+                        <Banknote size={14} />
+                        <span>Davomiyligi: <span className="text-white">{program.schedule?.duration}</span></span>
                       </div>
                     </div>
                   </div>
@@ -208,6 +247,11 @@ const Programs: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* 3D Orbit Gallery Animation Section */}
+        <div className="mt-12 w-full overflow-hidden">
+          <OrbitGallery />
         </div>
       </div>
     </div>

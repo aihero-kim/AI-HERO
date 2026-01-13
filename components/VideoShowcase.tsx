@@ -15,35 +15,61 @@ const VIDEOS: Video[] = [
     {
         id: '1',
         title: "AI HERO: Kelajak Ta'limi Taqdimoti",
-        thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200",
+        thumbnail: "/Thumbnail_1.png",
         duration: "2:45",
         url: "https://www.youtube.com/embed/r-nq5Y-YsNQ"
     },
     {
         id: '2',
-        title: "Robototexnika va Sun'iy Intellekt",
-        thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=600",
-        duration: "1:30",
-        url: "https://www.youtube.com/embed/videoseries?list=UULCObxlQv9lzSgRXEN9EGUWHA"
+        title: "The Four Seasons of Emotions",
+        thumbnail: "/Thumbnail_2.png",
+        duration: "1:01",
+        url: "https://www.youtube.com/shorts/6hxGv7DjkuI"
     },
     {
         id: '3',
-        title: "Koreys Tili va Grantlar",
-        thumbnail: "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=600",
-        duration: "3:15",
-        url: "https://www.youtube.com/embed/videoseries?list=UULCObxlQv9lzSgRXEN9EGUWHA"
+        title: "Black Bull",
+        thumbnail: "/Thumbnail_3.png",
+        duration: "34s",
+        url: "https://www.youtube.com/shorts/a6QXwVGxWCc"
     },
     {
         id: '4',
-        title: "O'quvchilarimiz Natijalari",
-        thumbnail: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600",
-        duration: "4:20",
-        url: "https://www.youtube.com/embed/videoseries?list=UULCObxlQv9lzSgRXEN9EGUWHA"
+        title: "One-piece Jonli harakat",
+        thumbnail: "/Thumbnail_4.png",
+        duration: "37s",
+        url: "https://www.youtube.com/shorts/4nF9pvcNfTA"
     }
 ];
 
+const getEmbedUrl = (url: string) => {
+    try {
+        // Handle various YouTube URL formats
+        let videoId = '';
+
+        if (url.includes('/embed/')) {
+            videoId = url.split('/embed/')[1].split('?')[0];
+        } else if (url.includes('/shorts/')) {
+            videoId = url.split('/shorts/')[1].split('?')[0];
+        } else if (url.includes('v=')) {
+            videoId = new URLSearchParams(url.split('?')[1]).get('v') || '';
+        }
+
+        return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0` : url;
+    } catch (e) {
+        return url;
+    }
+};
+
 const VideoShowcase: React.FC = () => {
     const [activeVideo, setActiveVideo] = useState<Video>(VIDEOS[0]);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    // Reset playing state when switching videos
+    const handleVideoChange = (video: Video) => {
+        setActiveVideo(video);
+        setIsPlaying(false);
+    };
 
     return (
         <section className="py-20 relative z-10 bg-transparent">
@@ -68,14 +94,38 @@ const VideoShowcase: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Video Player */}
                     <div className="lg:col-span-2">
-                        <div className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,100,255,0.1)] group bg-black">
-                            <iframe
-                                src={activeVideo.url}
-                                title={activeVideo.title}
-                                className="w-full h-full"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                        <div
+                            className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(0,100,255,0.1)] group bg-black cursor-pointer"
+                            onClick={() => setIsPlaying(true)}
+                        >
+                            {!isPlaying ? (
+                                <div className="w-full h-full relative">
+                                    <img
+                                        src={activeVideo.thumbnail}
+                                        alt={activeVideo.title}
+                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-red-600 group-hover:border-red-500">
+                                            <Play size={32} className="text-white fill-white ml-1" />
+                                        </div>
+                                    </div>
+                                    <div className="absolute bottom-6 left-6">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">
+                                            <Play size={12} className="text-red-500 fill-red-500" />
+                                            Videoni Ko'rish
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <iframe
+                                    src={getEmbedUrl(activeVideo.url)}
+                                    title={activeVideo.title}
+                                    className="w-full h-full"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            )}
                         </div>
                         <div className="mt-4">
                             <h3 className="text-2xl font-display font-bold text-white mb-2">{activeVideo.title}</h3>
@@ -88,7 +138,7 @@ const VideoShowcase: React.FC = () => {
                         {VIDEOS.map((video) => (
                             <div
                                 key={video.id}
-                                onClick={() => setActiveVideo(video)}
+                                onClick={() => handleVideoChange(video)}
                                 className={`group p-3 rounded-xl border transition-all cursor-pointer flex gap-4 items-center ${activeVideo.id === video.id
                                     ? 'bg-white/10 border-primary/50 shadow-[0_0_15px_rgba(0,243,255,0.2)]'
                                     : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20'

@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { sendMessageToTelegram } from '../services/telegram';
+import { db } from '../firebaseConfig';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const ContactForm: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -25,14 +27,23 @@ const ContactForm: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
-        const success = await sendMessageToTelegram(formData);
+        try {
+            // 1. Save to Firebase
+            await addDoc(collection(db, "applications"), {
+                ...formData,
+                createdAt: serverTimestamp()
+            });
 
-        setIsLoading(false);
-        if (success) {
+            // 2. Send Telegram Notification (Optional but good to keep)
+            await sendMessageToTelegram(formData);
+
+            setIsLoading(false);
             setIsSubmitted(true);
             setFormData({ name: '', school: '', phone: '', email: '', message: '' });
-        } else {
-            setError("Xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring yoki telefon orqali bog'laning.");
+        } catch (err) {
+            console.error("Error submitting form: ", err);
+            setIsLoading(false);
+            setError("Xatolik yuz berdi. Iltimos, internet aloqasini tekshiring yoki keyinroq urinib ko'ring.");
         }
     };
 

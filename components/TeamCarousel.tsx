@@ -54,11 +54,15 @@ const TeamCarousel: React.FC = () => {
                 {/* Carousel */}
                 <div className="team-carousel-wrapper">
                     <Swiper
-                        modules={[Pagination, Navigation]}
+                        modules={[Pagination, Navigation, Autoplay]}
                         spaceBetween={30}
                         slidesPerView={1}
-                        loop={false}
+                        loop={true}
                         speed={800}
+                        autoplay={{
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        }}
                         pagination={{
                             clickable: true,
                             dynamicBullets: true,
